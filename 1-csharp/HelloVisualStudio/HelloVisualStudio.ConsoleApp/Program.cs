@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace HelloVisualStudio.ConsoleApp
@@ -15,14 +16,23 @@ namespace HelloVisualStudio.ConsoleApp
             //     don't repeat yourself
 
             // have a list of products
-            GetProducts();
+            List<Product> catalog = GetProducts();
 
             // display them to the user
+            Display(catalog);
 
             // allow for some customization of that display to the user
         }
 
-        static List<Product> GetProducts()
+        static void Display(List<Product> catalog)
+        {
+            foreach (var product in catalog)
+            {
+                Console.WriteLine(product.Id);
+            }
+        }
+
+        static List<Product> CollectionDigression()
         {
             // built-in collections in C# / .NET
 
@@ -33,6 +43,8 @@ namespace HelloVisualStudio.ConsoleApp
             numbers[3] = 1; // setting the fourth value in the array to 1
             // indexing in most languages, including C#, starts from 0.
 
+            var objArray = new object[5];
+
             // difficulty with arrays is, the fixed size.
 
             // System.Collections.ArrayList is an old alternative to arrays in C#.
@@ -42,16 +54,75 @@ namespace HelloVisualStudio.ConsoleApp
             numbers2.Add(2);
             numbers2.Add(3);
             numbers2.Remove(2);
+            numbers2.Add("abc");
+            numbers2.Add(true);
+            numbers2.Add(new Product("", "", 1, 1));
+
+            if (numbers2[0] is int)
+            {
+            }
+            else
+            {
+                Product product = numbers2[0] as Product;
+                if (product != null)
+                {
+
+                }
+            }
+
+            // what if i randomized the order right here?
 
             // c# supports overloading the [] operator (indexing operator)
-            int x = numbers2[0]; // get the first item from the arraylist
+            //      recent version of c# added reverse indexing into collections with ^, so ^2 is the second from the end.
+            int x = (int)numbers2[0]; // get the first item from the arraylist
+            x++;
+            // who knows what that value's type really is?
 
-            Product p = new Product("", "", 1, 1);
+            // we use () operator (casting) to inform the compiler we know more about that value's type than it does.
+            // that was an example of "downcasting" - the arraylist could only guarantee the value was some descendant of "object"
+            //     but we told the compiler it's more specific than that.
+            //   this is "explicit" - meaning, i have to type the () cast manually since it's a potentially dangerous operation that could fail.
+
+            // the opposite is upcasting - this is when you take a value of some specific type and store it in a variable of a less specific type.
+            //    this is "implicit" - meaning, i don't have to use the () cast manually.
+
+            object o = x;
+            // upcasting a value type to "object" boxes the value in a reference type container.
+            // downcasting from that object back to the value is called unboxing.
+
+            double pi = 3.14;
+            int three = (int)pi; // this is neither downcasting nor upcasting; int and double are both structs, neither inheriting from the other.
+            // but it is a conversion that is "dangerous" (could lose data) so it's explicit.
+
+            // a 8-byte size floating point (double) is big enough to store every integer that could fit in a four-byte int
+            // this conversion can't lose data, so it's implicit.
+            double d = 1000;
+
+            var p = new Product("", "", 1, 1);
             ApplyDiscount(p);
             // if Product was value type, p HERE would not have the discount
 
+            // we don't need to use types like ArrayList anymore, because C# supports generics.
+
+            // enter List<T>
+
+            // List supports flexible size AND specific data type.
+            var list = new List<int> { 4, 3, 8, 1 }; // no upcasting
+            var z = list[0]; // no downcasting, the compiler knows it must be an int.
+
             return null;
         }
+
+        // any time you have a method that has only one statement, "return _____;",
+        // you can use "expression-body syntax", which looks like this
+        static List<Product> GetProducts() => new List<Product>
+        {
+            new Product("0001", "laptop", 1000.00, 5),
+            new Product("0003", "pizza", 10.00, 50),
+            new Product("0004", "coffee", 10.00, 20)
+        };
+
+        //static int GetThree() => 3;
 
         static void ApplyDiscount(Product p)
         {
