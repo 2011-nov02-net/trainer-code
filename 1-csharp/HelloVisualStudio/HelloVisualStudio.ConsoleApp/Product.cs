@@ -19,6 +19,7 @@ namespace HelloVisualStudio.ConsoleApp
         // product id
         public string Id { get; }
 
+        public DayOfWeek SaleDay { get; set; } = DayOfWeek.Friday;
 
         // name
         public string Name { get; set; }
