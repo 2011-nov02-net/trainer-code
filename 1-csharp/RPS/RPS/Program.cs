@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace RPS
 {
@@ -10,6 +11,10 @@ namespace RPS
             // Creates new instances of game and score
             var playerGame = new RPSgame();
             var playerScore = new Score();
+
+            List<IAI> ais = GetAllAIs();
+            var random = new Random();
+
             // Sets initial last user choice to null so AI knows not to consider
             string lastPlay = null;
             //Gather's user's initial choiuce
@@ -17,9 +22,11 @@ namespace RPS
             string playerChoice = Console.ReadLine();
             // Loops through game until player chooses to quit.
             while (playerChoice != "x")
-            { 
+            {
+                // randomly choose an AI to respond with
+                IAI whichAi = ais[random.Next(ais.Count)];
                 // Sends info to AI to choose play
-                string comChoice = AI.chooseRPS(lastPlay);
+                string comChoice = whichAi.ChooseRPS(lastPlay);
                 // Sends player and AI choice to RPSgame to resolve win/loss
                 playerGame.Play(playerChoice, comChoice, playerScore);
                 // Updates last play for AI decision making
@@ -29,6 +36,15 @@ namespace RPS
                 Console.WriteLine("Play again? Choose r, p, s, or x to quit.");
                 playerChoice = Console.ReadLine();
             }         
+        }
+
+        static List<IAI> GetAllAIs()
+        {
+            return new List<IAI>
+            {
+                new RandomAI(),
+                new BeatPreviousAI()
+            };
         }
     }
 }
