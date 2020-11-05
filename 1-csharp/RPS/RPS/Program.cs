@@ -11,6 +11,7 @@ namespace RPS
             // Creates new instances of game and score
             var playerGame = new RPSgame();
             var playerScore = new Score();
+            playerScore.WinHappened += () => { Console.WriteLine("(win via event)"); };
 
             List<IAI> ais = GetAllAIs();
             var random = new Random();
@@ -40,12 +41,23 @@ namespace RPS
 
         static List<IAI> GetAllAIs()
         {
+            //DelegateBasedAi.MoveChooser chooser;
+            //chooser = AlwaysRock;
+            //chooser = (string lastPlay) => { return "r"; };
+            //chooser = x => "r";
+
             return new List<IAI>
             {
                 new RandomAI(),
-                new BeatPreviousAI()
+                new BeatPreviousAI(),
+                new DelegateBasedAi(x => "r"), // always throws rock
+                new DelegateBasedAi(x => x ?? "r") // always copies the player, unless null, then "r"
             };
         }
+
+        //static string AlwaysRock(string lastPlay)
+        //{
+        //    return "r";
+        //}
     }
 }
-
