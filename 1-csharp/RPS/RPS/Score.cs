@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace RPS
 {
@@ -9,9 +10,14 @@ namespace RPS
         public event Action WinHappened;
         // tracks win, loss, and ties
 
-        public int winCount = 0;
-        public int lossCount = 0;
-        public int tieCount = 0;
+        [JsonPropertyName("wins")]
+        public int winCount { get; set; } = 0;
+
+        [JsonPropertyName("losses")]
+        public int lossCount { get; set; } = 0;
+
+        [JsonIgnore]
+        public int tieCount { get; set; } = 0;
 
         // methods to increment scores
         public void winSet()

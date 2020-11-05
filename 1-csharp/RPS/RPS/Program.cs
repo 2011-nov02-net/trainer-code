@@ -6,11 +6,14 @@ namespace RPS
     public class Program
     {
         static void Main(string[] args)
-        { 
+        {
+            // in a .net program, paths will be relative to the location of the application dll (probably down in bin/Debug/(etc)).
+            string filePath = "../../../data.json"; // should be next to this file.
+            var persistence = new JsonFilePersistence(filePath);
             Console.WriteLine("Let's Play Rock Paper Scissors!");
             // Creates new instances of game and score
             var playerGame = new RPSgame();
-            var playerScore = new Score();
+            var playerScore = persistence.Read();
             playerScore.WinHappened += () => { Console.WriteLine("(win via event)"); };
 
             List<IAI> ais = GetAllAIs();
@@ -36,7 +39,8 @@ namespace RPS
                 Console.WriteLine($"Your current record is: {playerScore.winCount} Wins - {playerScore.lossCount} Losses - {playerScore.tieCount} Ties ");
                 Console.WriteLine("Play again? Choose r, p, s, or x to quit.");
                 playerChoice = Console.ReadLine();
-            }         
+            }
+            persistence.Write(playerScore);
         }
 
         static List<IAI> GetAllAIs()
