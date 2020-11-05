@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HelloVisualStudio.ConsoleApp
+namespace HelloVisualStudio.Library
 {
     // access modifiers in C#
     // the default is the most restrictive possible.

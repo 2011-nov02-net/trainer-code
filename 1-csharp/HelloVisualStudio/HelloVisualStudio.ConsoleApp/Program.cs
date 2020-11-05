@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using HelloVisualStudio.ConsoleApp.Display;
+using HelloVisualStudio.Library;
+using HelloVisualStudio.Library.Sorting;
 
 namespace HelloVisualStudio.ConsoleApp
 {
@@ -10,26 +13,57 @@ namespace HelloVisualStudio.ConsoleApp
         {
             // separation of concerns
             //     different "concerns" or "considerations" in code shouldn't be tangled together
-            // single responsibility principle
+            // single responsibility principle (S in SOLID)
             //     a unit of code (e.g. class, method) should have just one responsibility.
             // DRY principle
             //     don't repeat yourself
+            // KISS
+            //     keep it simple stupid (unless it's on codesignal)
 
             // have a list of products
             List<Product> catalog = GetProducts();
 
-            // display them to the user
-            Display(catalog);
-
             // allow for some customization of that display to the user
-        }
-
-        static void Display(List<Product> catalog)
-        {
-            foreach (var product in catalog)
+            string input = null;
+            while (input != "s" && input != "d")
             {
-                Console.WriteLine(product.Id);
+                Console.WriteLine("Enter s for simple, d for detailed: ");
+                input = Console.ReadLine();
             }
+            string input2 = null;
+            while (input2 != "y" && input2 != "n")
+            {
+                Console.WriteLine("Sort? y/n: ");
+                input2 = Console.ReadLine();
+            }
+
+            ISorter sorter;
+            if (input2 == "y")
+            {
+                sorter = new PriceSorter();
+            }
+            else
+            {
+                sorter = new NonSorter();
+            }
+
+            IWriter writer;
+
+            // display them to the user
+            if (input == "s")
+            {
+                writer = new SimpleWriter(sorter);
+            }
+            else
+            {
+                writer = new DetailedWriter(sorter);
+            }
+
+            writer.FormatAndDisplay(catalog);
+
+            // dependency inversion principle (D in SOLID)
+            // - don't have classes depend on each other directly
+            //   instead, have them depend on interfaces
         }
 
         static List<Product> CollectionDigression()
