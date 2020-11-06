@@ -15,7 +15,7 @@ namespace HelloVisualStudio.ConsoleApp.Display
             _sorter = sorter;
         }
 
-        public void FormatAndDisplay(List<Product> catalog)
+        public void FormatAndDisplay(IEnumerable<Product> catalog)
         {
             foreach (var product in _sorter.SortProducts(catalog))
             {

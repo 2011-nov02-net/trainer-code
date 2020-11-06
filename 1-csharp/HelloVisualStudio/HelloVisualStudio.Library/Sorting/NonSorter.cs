@@ -8,7 +8,7 @@ namespace HelloVisualStudio.Library.Sorting
 {
     public class NonSorter : ISorter
     {
-        public List<Product> SortProducts(List<Product> catalog)
+        public IEnumerable<Product> SortProducts(IEnumerable<Product> catalog)
         {
             return catalog.ToList();
         }

@@ -12,7 +12,7 @@ namespace HelloVisualStudio.ConsoleApp.Display
 
         // they can't contain constructors or fields.
 
-        void FormatAndDisplay(List<Product> catalog);
+        void FormatAndDisplay(IEnumerable<Product> catalog);
         // in an interface, all members use the same access modifier as the whole interface.
         // (it would never make sense to have it be different)
     }

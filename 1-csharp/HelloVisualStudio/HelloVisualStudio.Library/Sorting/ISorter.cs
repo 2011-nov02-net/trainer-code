@@ -7,6 +7,6 @@ namespace HelloVisualStudio.Library.Sorting
 {
     public interface ISorter
     {
-        List<Product> SortProducts(List<Product> catalog);
+        IEnumerable<Product> SortProducts(IEnumerable<Product> catalog);
     }
 }

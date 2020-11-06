@@ -21,7 +21,7 @@ namespace HelloVisualStudio.ConsoleApp
             //     keep it simple stupid (unless it's on codesignal)
 
             // have a list of products
-            List<Product> catalog = GetProducts();
+            IEnumerable<Product> catalog = GetProducts();
 
             // allow for some customization of that display to the user
             string input = null;

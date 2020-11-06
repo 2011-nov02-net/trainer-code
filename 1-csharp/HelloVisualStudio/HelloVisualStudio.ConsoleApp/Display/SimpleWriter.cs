@@ -22,8 +22,9 @@ namespace HelloVisualStudio.ConsoleApp.Display
             _sorter = sorter;
         }
 
-        public void FormatAndDisplay(List<Product> catalog)
+        public void FormatAndDisplay(IEnumerable<Product> catalog)
         {
+            // in C#, if it implements IEnumerable<T>, then you can use foreach with it.
             foreach (var product in _sorter.SortProducts(catalog))
             {
                 Console.WriteLine(product.Id);

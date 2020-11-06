@@ -8,9 +8,9 @@ namespace HelloVisualStudio.Library.Sorting
 {
     public class PriceSorter : ISorter
     {
-        public List<Product> SortProducts(List<Product> catalog)
+        public IEnumerable<Product> SortProducts(IEnumerable<Product> catalog)
         {
-            return catalog.OrderBy(x => x.Price).ToList();
+            return catalog.OrderBy(x => x.Price);
         }
     }
 }
