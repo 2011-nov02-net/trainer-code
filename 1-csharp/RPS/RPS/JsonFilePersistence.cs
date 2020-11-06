@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace RPS
 {
@@ -12,7 +13,11 @@ namespace RPS
     //  - DataContractSerializer (also supports JSON)
     //  - XmlSerializer (quite old, doesn't support generics)
 
-    public class JsonFilePersistence
+    // whenever you interact with things outside .NET like the disk or the network
+    // 1. the class is probably IDisposable, you should probably make sure to use a using statement or otherwise call Dispose / Close
+    // 2. consider making the long-running calls "async" if other useful work can be done in the meantime.
+
+    public partial class JsonFilePersistence
     {
         private readonly string _filePath;
 
@@ -21,12 +26,14 @@ namespace RPS
             _filePath = filePath;
         }
 
-        public Score Read()
+        public async Task<Score> ReadAsync()
         {
             string json;
             try
             {
-                json = File.ReadAllText(_filePath);
+                //json = File.ReadAllText(_filePath);
+                Task<string> jsonTask = File.ReadAllTextAsync(_filePath);
+                json = await jsonTask;
             }
             catch (IOException)
             {
@@ -36,55 +43,12 @@ namespace RPS
             return data;
         }
 
-        public void Write(Score data)
-        {
-            // ways to work with JSON in .NET:
-            //  - DataContractSerializer (built-in, semi-old)
-            //  - System.Text.Json (built-in, new, fast)
-            //  - Newtonsoft.Json (aka JSON.NET, very popular 3rd party)
-
-            string json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
-
-            // write the string to a new file at _filePath
-            //File.WriteAllText(_filePath, json);
-
-            // version 1 (but we should handle exceptions)
-            //var writer = new StreamWriter(_filePath);
-            //writer.Write(json);
-            //writer.Close(); // need to call Close or Dispose on any object that contacts stuff outside the CLR (disk, network, OS calls)
-
-            // version 2
-            //StreamWriter writer = null;
-            //try
-            //{
-            //    writer = new StreamWriter(_filePath);
-            //    writer.Write(json);
-            //}
-            //finally
-            //{
-            //    // finally block is mostly for cleaning up resources that should be cleaned up regardless of success or failure.
-            //    writer?.Close();
-            //}
-            // try vs catch vs finally.
-            // try: put the code that might throw an exception you want to react to.
-            // catch: for exceptions we can handle, handle them
-            //        for exceptions we can't handle, we might e.g. log them, but re-throw them. "throw;"
-            // finally: run if there was no exception, or if there was an uncaught exception, or if there was a caught exception
-            //      (i.e. always every time)
-
-            // version 3
-            // (equivalent to version 2, but much nicer to write and look at)
-            //using (var writer = new StreamWriter(_filePath))
-            //{
-            //    writer.Write(json);
-            //}
-
-            // 
-            using var writer = new StreamWriter(_filePath); // a newer form of the using statement; does the same thing
-                        // calls dispose when the variable goes out of scope (the next } wherever it is)
-            writer.Write(json);
-
-            // when you instantiate any class that implements IDisposable interface, use a using statement to handle cleaning it up.
-        }
+        // steps to go async:
+        // 1. look for a version of the method you want to call that ends in the "Async" prefix that returns a Task. call that instead.
+        // 2. now you have a Task instead of the thing you wanted. either await it right away, or, if you can do something useful in the meantime,
+        //        do that first.
+        // 3. compile error: method must be async. add "async" to method. change return type: void becomes Task, any T becomes Task<T>.
+        //        also, by convention, add the "Async" suffix to your own method.
+        // 4. any code that calls this method: start from step 1.
     }
 }

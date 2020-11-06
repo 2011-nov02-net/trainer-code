@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RPS
 {
     public class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             // in a .net program, paths will be relative to the location of the application dll (probably down in bin/Debug/(etc)).
             string filePath = "../../../data.json"; // should be next to this file.
@@ -13,8 +14,7 @@ namespace RPS
             Console.WriteLine("Let's Play Rock Paper Scissors!");
             // Creates new instances of game and score
             var playerGame = new RPSgame();
-            var playerScore = persistence.Read();
-            playerScore.WinHappened += () => { Console.WriteLine("(win via event)"); };
+            Task<Score> playerScoreTask = persistence.ReadAsync();
 
             List<IAI> ais = GetAllAIs();
             var random = new Random();
@@ -24,6 +24,9 @@ namespace RPS
             //Gather's user's initial choiuce
             Console.WriteLine("Choose rock (r), paper (p), or scissors(s). Enter x to quit.");
             string playerChoice = Console.ReadLine();
+
+            var playerScore = await playerScoreTask;
+            playerScore.WinHappened += () => { Console.WriteLine("(win via event)"); };
             // Loops through game until player chooses to quit.
             while (playerChoice != "x")
             {
@@ -40,7 +43,7 @@ namespace RPS
                 Console.WriteLine("Play again? Choose r, p, s, or x to quit.");
                 playerChoice = Console.ReadLine();
             }
-            persistence.Write(playerScore);
+            await persistence.WriteAsync(playerScore);
         }
 
         static List<IAI> GetAllAIs()
@@ -49,6 +52,10 @@ namespace RPS
             //chooser = AlwaysRock;
             //chooser = (string lastPlay) => { return "r"; };
             //chooser = x => "r";
+
+            int x = 4;
+            int y = 7;
+            Swap(ref x, ref y); // now, y is 4, and x is 7.
 
             return new List<IAI>
             {
@@ -63,5 +70,12 @@ namespace RPS
         //{
         //    return "r";
         //}
+
+        static void Swap<T>(ref T a, ref T b)
+        {
+            T swap = a;
+            a = b;
+            b = swap;
+        }
     }
 }
