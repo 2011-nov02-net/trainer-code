@@ -20,6 +20,8 @@ https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/archi
 
 polymorphism
 ability to substitute different implementations
+overloading methods so we can operate on different kinds of data to achieve similar goals under methods with the same name
+overriding methods so that a derived class can handle its own particular behavior in a compatible but new way
 we can use delegates to inject custom behavior into methods. we can use generics to allow for many different types to be used.
 we can treat derived class objects as though they were base class objects or any other implementor of interface
 we can implement the same interface many different ways. we can overload methods, and override virtual methods.
