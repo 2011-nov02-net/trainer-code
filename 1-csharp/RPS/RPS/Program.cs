@@ -6,6 +6,7 @@ namespace RPS
 {
     public class Program
     {
+
         static async Task Main(string[] args)
         {
             // in a .net program, paths will be relative to the location of the application dll (probably down in bin/Debug/(etc)).
