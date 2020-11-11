@@ -63,6 +63,22 @@ FROM Artist AS ar
 	INNER JOIN Genre AS g ON t.GenreId = g.GenreId
 WHERE g.Name = 'Latin';
 
+-------
+
+SELECT * FROM Track WHERE Milliseconds = (
+	SELECT MAX(t.Milliseconds)
+	FROM Track AS t
+		INNER JOIN MediaType AS mt ON mt.MediaTypeId = t.MediaTypeId
+	WHERE mt.Name LIKE '%video%');
+
+SELECT * FROM Track WHERE Milliseconds >= ALL (
+	SELECT t.Milliseconds
+	FROM Track AS t
+		INNER JOIN MediaType AS mt ON mt.MediaTypeId = t.MediaTypeId
+	WHERE mt.Name LIKE '%video%'); -- not exactly right
+
+-------
+
 -- exercises
 
 -- solve these with a mixture of joins, subqueries, CTE, and set operators.
@@ -80,6 +96,23 @@ WHERE g.Name = 'Latin';
 
 -- 5. how many audio tracks were bought by German customers, and what was
 --    the total price paid for them?
+SELECT SUM(il.UnitPrice * il.Quantity) AS TotalPricePaid
+FROM Track AS t
+	INNER JOIN MediaType AS mt ON mt.MediaTypeId = t.MediaTypeId
+	INNER JOIN InvoiceLine AS il ON il.TrackId = t.TrackId
+	INNER JOIN Invoice AS i ON i.InvoiceId = il.InvoiceId
+	INNER JOIN Customer AS c ON c.CustomerId = i.CustomerId
+WHERE mt.Name LIKE '%audio%' AND c.Country = 'Germany'
+GROUP BY t.TrackId;
+
+SELECT SUM(il.UnitPrice * il.Quantity) AS TotalPricePaid
+FROM Track AS t
+	INNER JOIN MediaType AS mt ON mt.MediaTypeId = t.MediaTypeId
+	INNER JOIN InvoiceLine AS il ON il.TrackId = t.TrackId
+	INNER JOIN Invoice AS i ON i.InvoiceId = il.InvoiceId
+	INNER JOIN Customer AS c ON c.CustomerId = i.CustomerId
+WHERE mt.Name LIKE '%audio%' AND c.Country = 'Germany'
+GROUP BY t.TrackId;
 
 -- 6. list the names and countries of the customers supported by an employee
 --    who was hired younger than 35.
