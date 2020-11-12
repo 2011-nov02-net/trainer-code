@@ -116,3 +116,24 @@ DELETE FROM School.Student WHERE Name = 'Nick';
 --   to control what happens when the referenced PK value changes/is deleted.
 
 SELECT * FROM School.CourseStudent;
+
+-- indexes
+-- data structures that we can have sql server maintain during writes
+-- so that reads can be faster.
+
+-- in SQL Server:
+   -- clustered index
+        -- tells sql server what order to 'physically' arrange the table in.
+		-- can only be one
+		-- by default, PRIMARY KEY sets CLUSTERED INDEX.
+   -- nonclustered index
+		-- maintains a separate data structure analogous to an index at the end of
+		-- and enyclopedia
+		-- we can have many of these.
+		-- UNIQUE sets nonclustered index by default
+
+-- you want indexes on the columns/sets of columns that you usually reference
+-- in the JOIN or WHERE conditions. (foreign keys are a good candidate)
+
+--Dictionary<int, Data>
+--Dictionary<string, List<Data>>
