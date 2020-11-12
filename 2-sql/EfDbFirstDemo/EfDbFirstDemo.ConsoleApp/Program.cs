@@ -15,13 +15,11 @@ namespace EfDbFirstDemo.ConsoleApp
      *      Microsoft.EntityFrameworkCore.SqlServer
      *      --startup-project <path-to-startup-project-folder>
      *      --force
-     *      --output-dir Entities
+     *      --no-onconfiguring
      *    https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet#dotnet-ef-dbcontext-scaffold
      *    (if you don't have dotnet ef installed, run: "dotnet tool install --global dotnet-ef")
      *    (this will fail if your projects do not compile)
-     * 4. delete the DbContext.OnConfiguring method from the scaffolded code.
-     *    (so that the connection string is not put on the public internet)
-     * 5. any time you change the structure of the tables (DDL), go to step 3.
+     * 4. any time you change the structure of the tables (DDL), go to step 3.
      */
 
     class Program
