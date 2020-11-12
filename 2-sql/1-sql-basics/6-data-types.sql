@@ -39,6 +39,15 @@ SELECT CONVERT(NVARCHAR, 1234);
 -- "string literals" like 'asdf' are VARCHAR
 -- "string literals" like N'asdf' are NVARCHAR
 
+-- NULL handling - = NULL doesn't work, use IS NULL
+-- COALESCE function: provide replacement value in case of NULL
+-- all rock songs, showing the name in the format 'ArtistName - SongName'
+SELECT COALESCE(ar.Name, 'n/a') + ' - ' + t.Name AS Song
+FROM Track AS t
+	INNER JOIN Genre ON Genre.GenreId = t.GenreId
+	LEFT JOIN Album AS al ON t.AlbumId = al.AlbumId
+	LEFT JOIN Artist AS ar ON al.ArtistId = ar.ArtistId
+WHERE Genre.Name = 'Rock';
 
 -- collation
    -- database-wide settings for things like:
