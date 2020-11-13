@@ -43,7 +43,7 @@ namespace EfDbFirstDemo.ConsoleApp
             // tell it to use SQL Server (and not MySQL etc), and any other EF-side options.
             var optionsBuilder = new DbContextOptionsBuilder<ChinookContext>();
             optionsBuilder.UseSqlServer(GetConnectionString());
-            optionsBuilder.LogTo(logStream.Write, LogLevel.Information);
+            optionsBuilder.LogTo(logStream.WriteLine, LogLevel.Information);
             //optionsBuilder.LogTo(Console.WriteLine, LogLevel.Error);
             s_dbContextOptions = optionsBuilder.Options;
 
@@ -101,8 +101,31 @@ namespace EfDbFirstDemo.ConsoleApp
 
             foreach (var track in tracks)
             {
-                Console.WriteLine($"{track.TrackId} - {track.Name} ({track.Genre.Name})");
+                Console.WriteLine($"{track.TrackId} - {track.Name} ({track?.Genre?.Name})");
             }
+
+            // EF by default only loads the data from one table at a time.
+            //    therefore, the navigation properties will be null or empty.
+            // if you need those properties to be filled in, you have to tell EF somehow.
+
+            // there are three ways to tell EF to fill them in:
+            //  1. eager loading (do this one): call Include (and maybe ThenInclude) methods
+            //        (telling EF in the query itself to join with other tables)
+            //  2. lazy loading (avoid this one): can be enabled in the dbcontext options...
+            //       it will load each navigation property in the moment you access it.
+            //       for very simple cases, minimal convenience
+            //       for anything more complicated, the performance impact is too much
+            //          (N+1 problem)
+            //  3. explicit loading (rarely needed): given an actual object taken from the context
+            //        we can tell EF to fill in individual properties
+
+            // good practice with entity framework:
+            // 1. pay attention to when the query is actually sent to the DB (e.g. ToList())
+            // 2. try to get all the data you need at a given moment in one query rather than several.
+            // 3. use eager loading (Include) rather than lazy or explicit.
+            // 4. avoid using foreign key values when the navigation properties work instead.
+
+
 
             //List<string> info = context.Tracks
             //    .Include(t => t.Genre)
@@ -114,17 +137,74 @@ namespace EfDbFirstDemo.ConsoleApp
 
         static void EditOneOfThoseTracks()
         {
-            throw new NotImplementedException();
+
+            using var context = new ChinookContext(s_dbContextOptions);
+
+            Track track = context.Tracks.OrderBy(x => x.Name).First();
+
+            // context.Tracks.Find(45) // get the track with primary key 45.
+
+            // every object that you pull from the context is "tracked" by the context
+            // when you call SaveChanges, the context will send all changes that have been
+            // noticed automatically on the tracked entities
+
+            track.Name += ".";
+
+            // at this point, no SQL has run, the changes are pending inside the context object.
+
+            //context.Tracks.Update(track); // Update method will make the context track the object you pass
+            // (if it isn't already)
+
+            context.SaveChanges(); // or, SaveChangesAsync
+            // all the changes are applied as a transaction by default
+            // if anything goes wrong - network problems, SQL errors - it's thrown as an exception
+
+            // we could do more changes here and then call SaveChanges again
         }
 
         static void InsertANewTrack()
         {
-            throw new NotImplementedException();
+            // for adding, you don't need to worry about foreign key values.
+            // you can add/change relationships between objects via the navigation properties.
+
+            using var context = new ChinookContext(s_dbContextOptions);
+
+            Track firstTrack = context.Tracks.OrderBy(x => x.Name).First();
+            string nameOfFirstTrack = firstTrack.Name;
+
+            var audio = context.MediaTypes.First(x => x.Name.Contains("AUDIO"));
+
+            var random = new Random();
+            var track = new Track
+            {
+                TrackId = random.Next(8000, 80000),
+                Name = $"!{nameOfFirstTrack}",
+                UnitPrice = 3.99M,
+                Milliseconds = 5000,
+                MediaType = audio,
+                Genre = new Genre { GenreId = random.Next(10000, 100000), Name = "abc" }
+            };
+
+            var rock = context.Genres
+                .Include(g => g.Tracks)
+                .First(g => g.Name.Contains("rock"));
+
+            rock.Tracks.Add(track);
+
+            // EF frees us from having to worry about foreign key values
+
+            context.Tracks.Add(track);
+
+            // this not only will see the Genre and insert it as well, with the right foreign key value on the Track...
+            context.SaveChanges();
+            // ... but also, once SaveChanges returns, all three places where the relationship is represented in .NET
+            //    will be fixed up to be consistent.
         }
 
         static void DeleteThatTrack()
         {
-            throw new NotImplementedException();
+            // there's actually no way to delete in EF without first fetching the object.
+            // first, get the thing, then, remove it from its DbSet, then SaveChanges
         }
 
         static void LinqStuff()
