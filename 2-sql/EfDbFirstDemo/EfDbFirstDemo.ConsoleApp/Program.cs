@@ -36,7 +36,7 @@ namespace EfDbFirstDemo.ConsoleApp
 
         static void Main(string[] args)
         {
-            LinqStuff();
+            //LinqStuff();
 
             using var logStream = new StreamWriter("ef-logs.txt");
             // DbContextOptions is how we give the context its connection string (to log in to the sql server),
@@ -48,6 +48,26 @@ namespace EfDbFirstDemo.ConsoleApp
             s_dbContextOptions = optionsBuilder.Options;
 
             Display5Tracks();
+            Console.WriteLine();
+
+            // implement these 3 methods, changing what they're doing if you want
+            // bonus: user input instead of hardcoded stuff...
+            // bonus: involve multiple tables besides just track.
+
+            EditOneOfThoseTracks();
+
+            Display5Tracks();
+            Console.WriteLine();
+
+            InsertANewTrack();
+
+            Display5Tracks();
+            Console.WriteLine();
+
+            DeleteThatTrack();
+
+            Display5Tracks();
+            Console.WriteLine();
         }
 
         static string GetConnectionString()
@@ -90,6 +110,21 @@ namespace EfDbFirstDemo.ConsoleApp
             //    .Where(track => SomeComplexMethod(track)) // this can't become sql, so, EF will fetch every row and then discard them
             //    .Take(5)
             //    .ToList();
+        }
+
+        static void EditOneOfThoseTracks()
+        {
+            throw new NotImplementedException();
+        }
+
+        static void InsertANewTrack()
+        {
+            throw new NotImplementedException();
+        }
+
+        static void DeleteThatTrack()
+        {
+            throw new NotImplementedException();
         }
 
         static void LinqStuff()
