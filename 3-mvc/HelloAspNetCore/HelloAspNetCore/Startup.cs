@@ -19,7 +19,8 @@ namespace HelloAspNetCore
             // this method is for (1) configuring middleware before actually plugging it in
             // and (2) adding "services" to the DI container. (more on that eventually)
 
-            services.AddControllers(); // adds controllers to the list of things ASP.NET Core will understand.
+            // adds controllers and views to the list of things ASP.NET Core will understand.
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

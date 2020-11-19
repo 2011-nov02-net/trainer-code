@@ -1,0 +1,25 @@
+﻿@*
+  @ followed by a C# expression
+  is rendered by evaluating the expression, converting the result to a string, and inserting that
+  onto the HTML document.
+
+  @ followed by a c# block of some kind - like for () {}, while () {}, if () {}, or just {}
+  adds code that will run during the render of the view.
+*@
+
+@{
+  // setting the layout property visible from the view will give the view a layout.
+  Layout = "_Layout";
+}
+
+@{
+  var x = 123;
+}
+
+@x
+
+@{
+  x = 321;
+}
+
+@x

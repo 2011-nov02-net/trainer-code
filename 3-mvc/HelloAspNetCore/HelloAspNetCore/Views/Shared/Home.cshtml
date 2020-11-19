@@ -1,0 +1,18 @@
+﻿@* 
+  this is a razor view
+  the Razor view engine processes files like this, turns them into HTML (execution / rendering).
+  razor syntax is its own thing, that can combine C# and HTML in one file.
+
+  in general, in a razor view, C# is denoted by the @ in some way, and everything else
+  is html. (with the exception of "tag helpers")
+*@
+
+<html>
+<head>
+
+</head>
+<body>
+  Hello from view @(2 + 2)
+  @DateTime.Now
+</body>
+</html>
