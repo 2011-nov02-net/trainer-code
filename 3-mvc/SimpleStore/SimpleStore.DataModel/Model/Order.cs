@@ -10,6 +10,8 @@ namespace SimpleStore.DataModel.Model
 
         public int Quantity { get; set; }
 
+        //public int LocationId { get; set; }
+
         public Location Location { get; set; }
     }
 }

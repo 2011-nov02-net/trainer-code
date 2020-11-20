@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SimpleStore.DataModel.Model;
 using SimpleStore.WebApp.Models;
 
 namespace SimpleStore.WebApp.Controllers
@@ -12,14 +13,18 @@ namespace SimpleStore.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
+            var total = _context.Locations.Sum(l => l.Stock);
+            ViewData["TotalStock"] = total;
             return View();
         }
 
