@@ -25,8 +25,14 @@ namespace SimpleStore.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString("default");
+            if (connectionString is null)
+            {
+                throw new InvalidOperationException("no connection string 'default' found");
+            }
+
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("default")));
+                options.UseSqlServer(connectionString));
 
             services.AddControllersWithViews();
         }
