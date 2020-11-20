@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleOrderApp.Domain", "Si
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleOrderApp.Data", "SimpleOrderApp.Data\SimpleOrderApp.Data.csproj", "{0148D1D5-EED6-4E2D-BC00-B751599B5F9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleOrderApp.WebApp", "SimpleOrderApp.WebApp\SimpleOrderApp.WebApp.csproj", "{5EC0601B-36BA-46F4-8C5D-6D74C3BFCC28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleOrderApp.WebApp", "SimpleOrderApp.WebApp\SimpleOrderApp.WebApp.csproj", "{5EC0601B-36BA-46F4-8C5D-6D74C3BFCC28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleOrderApp.UnitTests", "SimpleOrderApp.UnitTests\SimpleOrderApp.UnitTests.csproj", "{038724A7-24BD-4CE0-B653-A2C449C70408}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{5EC0601B-36BA-46F4-8C5D-6D74C3BFCC28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EC0601B-36BA-46F4-8C5D-6D74C3BFCC28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EC0601B-36BA-46F4-8C5D-6D74C3BFCC28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{038724A7-24BD-4CE0-B653-A2C449C70408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{038724A7-24BD-4CE0-B653-A2C449C70408}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{038724A7-24BD-4CE0-B653-A2C449C70408}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{038724A7-24BD-4CE0-B653-A2C449C70408}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

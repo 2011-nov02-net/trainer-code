@@ -86,8 +86,9 @@ namespace SimpleOrderApp.WebApp.Controllers
                 // way #2: tell the browser to redirect to /home/index
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "error while adding location");
                 ModelState.AddModelError("", "there was some error, try again");
                 // the asp-validation-summary tag helper (and asp-validation-for) will show any existing model errors
                 return View();
