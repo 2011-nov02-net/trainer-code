@@ -39,6 +39,11 @@ namespace SimpleOrderApp.UnitTests
             throw new NotImplementedException();
         }
 
+        public void Delete(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Location> GetAll()
         {
             return new[] { new Location("abc", 1), new Location("def", 2) };
