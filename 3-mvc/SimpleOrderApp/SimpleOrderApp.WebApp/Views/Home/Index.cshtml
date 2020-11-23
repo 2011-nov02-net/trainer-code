@@ -11,21 +11,39 @@
   @* we use these HTML helpers so that the display formatting can be controlled
     from the DataAnnotations on the model of this view *@
   <table class="table">
+      <thead>
+        <tr>
+          <th>@Html.DisplayNameFor(m => m.First().Name)</th>
+          <th>@Html.DisplayNameFor(m => m.First().Stock)</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var location in Model)
+        {
+          <tr>
+            <td>@Html.DisplayFor(m => location.Name)</td>
+            <td>@Html.DisplayFor(m => location.Stock)</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+  @*<table class="table">
     <thead>
       <tr>
-        <th>@Html.DisplayNameFor(m => m.First().Name)</th>
-        <th>@Html.DisplayNameFor(m => m.First().Stock)</th>
+        <th>Location Name</th>
+        <th>Stock</th>
       </tr>
     </thead>
     <tbody>
       @foreach (var location in Model)
       {
-      <tr>
-        <td>@Html.DisplayFor(m => location.Name)</td>
-        <td>@Html.DisplayFor(m => location.Stock)</td>
-      </tr>
+        <tr>
+          <td>@location.Name</td>
+          <td>@location.Stock</td>
+        </tr>
       }
     </tbody>
-  </table>
+  </table>*@
 
 </div>
