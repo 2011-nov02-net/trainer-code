@@ -60,5 +60,16 @@ namespace SimpleOrderApp.Data
             // write changes to DB
             _context.SaveChanges();
         }
+
+        public void Delete(string name)
+        {
+            // query the DB
+            var entity = _context.Locations.First(x => x.Name == name);
+
+            _context.Remove(entity);
+
+            // write changes to DB
+            _context.SaveChanges();
+        }
     }
 }

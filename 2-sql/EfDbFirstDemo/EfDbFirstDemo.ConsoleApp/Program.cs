@@ -43,8 +43,9 @@ namespace EfDbFirstDemo.ConsoleApp
             // tell it to use SQL Server (and not MySQL etc), and any other EF-side options.
             var optionsBuilder = new DbContextOptionsBuilder<ChinookContext>();
             optionsBuilder.UseSqlServer(GetConnectionString());
+            optionsBuilder.UseLazyLoadingProxies(); // switch on lazy loading
             optionsBuilder.LogTo(logStream.WriteLine, LogLevel.Information);
-            //optionsBuilder.LogTo(Console.WriteLine, LogLevel.Error);
+            optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
             s_dbContextOptions = optionsBuilder.Options;
 
             Display5Tracks();
@@ -92,14 +93,14 @@ namespace EfDbFirstDemo.ConsoleApp
             using var context = new ChinookContext(s_dbContextOptions);
 
             IQueryable<Track> tracks = context.Tracks
-                .Include(t => t.Genre)
+                // .Include(t => t.Genre)
                 .OrderBy(t => t.Name)
                 .Take(5);
 
             // at this point, the query has not yet even been sent, let alone the results downloaded.
             // (because LINQ uses deferred execution)
 
-            foreach (var track in tracks)
+            foreach (var track in tracks.ToList())
             {
                 Console.WriteLine($"{track.TrackId} - {track.Name} ({track?.Genre?.Name})");
             }

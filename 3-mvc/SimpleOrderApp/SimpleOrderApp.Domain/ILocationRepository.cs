@@ -9,5 +9,7 @@ namespace SimpleOrderApp.Domain
         void Create(Location location);
 
         void Update(Location location);
+
+        void Delete(string name);
     }
 }
