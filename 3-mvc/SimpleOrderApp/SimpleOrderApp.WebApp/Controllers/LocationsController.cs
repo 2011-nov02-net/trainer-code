@@ -24,7 +24,9 @@ namespace SimpleOrderApp.WebApp.Controllers
         // GET: Locations
         public ActionResult Index()
         {
-            var locations = _repository.GetAll();
+
+            var locations = _repository.GetAll().ToList();
+            ViewData["LocationCount"] = locations.Count;
             return View(locations);
         }
 
@@ -64,6 +66,8 @@ namespace SimpleOrderApp.WebApp.Controllers
                 var location = new Location(viewModel.Name, viewModel.Stock);
                 _repository.Create(location);
 
+                TempData["CreatedLocation"] = location.Name;
+
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -77,8 +81,13 @@ namespace SimpleOrderApp.WebApp.Controllers
         }
 
         // GET: Locations/Edit/asdf
-        public ActionResult Edit(int id)
+        public ActionResult Edit(dynamic id)
         {
+            // "dynamic" type effectively switches off the compile-time type checking.
+            //dynamic x = new object();
+            //x.adsf = 4;
+            //var y = 123 * x.qwer;
+
             return View();
         }
 
