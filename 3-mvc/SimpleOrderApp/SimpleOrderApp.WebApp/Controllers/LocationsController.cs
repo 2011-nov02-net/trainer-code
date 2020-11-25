@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using SimpleOrderApp.Domain;
+using SimpleOrderApp.WebApp.Filters;
+using SimpleOrderApp.WebApp.Services;
 using SimpleOrderApp.WebApp.ViewModels;
 
 namespace SimpleOrderApp.WebApp.Controllers
@@ -24,11 +26,10 @@ namespace SimpleOrderApp.WebApp.Controllers
 
         // GET: Locations
         [Route("/all", Name = "locations-all")]
-        [Route("index/{email}/{quantity:int}")]
+        //[Route("index/{email}/{quantity:int}")]
         [Route("")]
         public ActionResult Index()
         {
-
             var locations = _repository.GetAll().ToList();
             ViewData["LocationCount"] = locations.Count;
             return View(locations);

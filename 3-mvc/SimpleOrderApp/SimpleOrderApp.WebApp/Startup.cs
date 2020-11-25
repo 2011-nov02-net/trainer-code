@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using SimpleOrderApp.Data;
 using SimpleOrderApp.Data.Model;
 using SimpleOrderApp.Domain;
+using SimpleOrderApp.WebApp.Filters;
+using SimpleOrderApp.WebApp.Services;
 
 namespace SimpleOrderApp.WebApp
 {
@@ -32,6 +34,9 @@ namespace SimpleOrderApp.WebApp
             // teach ASP.NET Core about the dbcontext (so one can be created for each thing that needs it)
             services.AddDbContext<SimpleOrderContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("Sqlite")));
+            // AddDbContext makes it "scoped" by default.
+            // it shouldn't be singleton because it's not threadsafe, also it's meant to be short-lived
+            // it COULD be transient.
 
             // ^ if you get a NullReferenceException there, it's because you need to put this in
             // user secrets:
@@ -40,17 +45,25 @@ namespace SimpleOrderApp.WebApp
             //}
 
             // "if anyone asks for an ILocationRepository, construct a LocationRepository"
-            //services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
 
             // flexible... e.g.:
-            if (Configuration["WhichRepository"] == "1")
-            {
-                services.AddScoped<ILocationRepository, LocationRepository>();
-            }
-            else
-            {
-                services.AddScoped<ILocationRepository, LocationRepository>();
-            }
+            //if (Configuration["WhichRepository"] == "1")
+            //{
+            //    services.AddScoped<ILocationRepository, LocationRepository>();
+            //}
+            //else
+            //{
+            //    //services.AddScoped<ILocationRepository, LocationRepositoryOther>();
+            //}
+
+            var loc = new Location("asdf", 123);
+            services.AddSingleton(loc); // can do it this way for singletons
+            // can do it this way for anything
+            services.AddSingleton(sp => new Location("asdf", 123));
+            // that "sp" parameter is a service provider - you can get other services from it
+            // you could write it this way... but it does that by default anyway:
+            //services.AddSingleton(sp => new LocationRepository(sp.GetService<SimpleOrderContext>()));
 
             //services.AddScoped<LocationRepository>();
             // (equivalent to:)
@@ -62,7 +75,13 @@ namespace SimpleOrderApp.WebApp
             //      (default for the dbcontext)
             // - transient: a new instance for every time a different object needs one
 
-            services.AddControllersWithViews();
+            // better to define an interface for this
+            services.AddSingleton<VisitCounter>();
+
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<VisitCountingFilterAttribute>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,6 +5,11 @@ namespace SimpleStore.DataModel.Model
 {
     public class Location
     {
+        public Location()
+        {
+
+        }
+
         public int Id { get; set; } // will become PK by convention
 
         public string Name { get; set; }
