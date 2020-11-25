@@ -87,6 +87,11 @@ namespace SimpleOrderApp.WebApp
 
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapControllerRoute(
+                //    name: "create-location",
+                //    pattern: "new-location/{email}",
+                //    defaults: new { controller = "Location", action = "Create" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

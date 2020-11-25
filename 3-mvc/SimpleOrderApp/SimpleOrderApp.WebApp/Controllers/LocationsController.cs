@@ -12,6 +12,7 @@ using SimpleOrderApp.WebApp.ViewModels;
 
 namespace SimpleOrderApp.WebApp.Controllers
 {
+    [Route("[controller]/[action]")]
     public class LocationsController : Controller
     {
         private readonly ILocationRepository _repository;
@@ -22,6 +23,9 @@ namespace SimpleOrderApp.WebApp.Controllers
         }
 
         // GET: Locations
+        [Route("/all", Name = "locations-all")]
+        [Route("index/{email}/{quantity:int}")]
+        [Route("")]
         public ActionResult Index()
         {
 
@@ -31,6 +35,7 @@ namespace SimpleOrderApp.WebApp.Controllers
         }
 
         // GET: Locations/Details/asdf
+        [Route("{id}")]
         public ActionResult Details(string id)
         {
             var location = _repository.GetAll().First(x => x.Name == id);
@@ -38,13 +43,14 @@ namespace SimpleOrderApp.WebApp.Controllers
         }
 
         // GET: Locations/Create
+        [Route("")]
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: Locations/Create
-        [HttpPost]
+        [HttpPost("")]
         [ValidateAntiForgeryToken]
         public ActionResult Create(LocationViewModel viewModel)
         //public ActionResult Create([Required, RegularExpression("[A-Z]")] string name)
@@ -81,6 +87,8 @@ namespace SimpleOrderApp.WebApp.Controllers
         }
 
         // GET: Locations/Edit/asdf
+
+        [Route("{id}")]
         public ActionResult Edit(dynamic id)
         {
             // "dynamic" type effectively switches off the compile-time type checking.
@@ -92,7 +100,7 @@ namespace SimpleOrderApp.WebApp.Controllers
         }
 
         // POST: Locations/Edit/asdf
-        [HttpPost]
+        [HttpPost("{id}")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
@@ -112,6 +120,7 @@ namespace SimpleOrderApp.WebApp.Controllers
         //         receives the submitted form data.
 
         // GET: Locations/Delete/asdf
+        [Route("{id}")]
         public ActionResult Delete(string id)
         {
             var location = _repository.GetAll().First(x => x.Name == id);
@@ -119,7 +128,7 @@ namespace SimpleOrderApp.WebApp.Controllers
         }
 
         // POST: Locations/Delete/asdf
-        [HttpPost]
+        [HttpPost("{id}")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(string id, IFormCollection collection)
         {
