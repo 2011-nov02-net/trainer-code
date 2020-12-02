@@ -13,6 +13,7 @@ namespace SimpleOrderApp.Data
 
         public LocationRepository(SimpleOrderContext context)
         {
+            context.Database.EnsureCreated();
             _context = context;
         }
 
