@@ -84,12 +84,15 @@ stages:
     - script: dotnet publish --configuration $(buildConfiguration) --output publish
       displayName: dotnet publish
       workingDirectory: 3-mvc/SimpleOrderApp
+    
+    - publish: 3-mvc/SimpleOrderApp/publish
+      artifact: app
 
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '3-mvc/SimpleOrderApp/publish'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+    # - task: PublishBuildArtifacts@1
+    #   inputs:
+    #     PathtoPublish: '3-mvc/SimpleOrderApp/publish'
+    #     ArtifactName: 'drop'
+    #     publishLocation: 'Container'
 
     #####################################
     # - task: AzureRmWebAppDeployment@4
@@ -101,3 +104,24 @@ stages:
     #     appType: 'webApp'
     #     WebAppName: '2011-escalona-order-app'
     #     packageForLinux: '3-mvc/SimpleOrderApp/publish'
+
+- stage: release
+  jobs:
+  - deployment: app-service
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: app
+            displayName: download app
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: azure app service deploy
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'Pay-As-You-Go(0518cd5b-d389-4983-9496-cdcae31dcc60)'
+              appType: 'webApp'
+              WebAppName: '2011-escalona-order-app'
+              packageForLinux: 'app'
