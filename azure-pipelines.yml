@@ -49,3 +49,16 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
     publishTestResults: true
     workingDirectory: '3-mvc/SimpleOrderApp'
+
+- script: dotnet publish --configuration $(buildConfiguration) --output publish
+  displayName: dotnet publish
+  workingDirectory: 3-mvc/SimpleOrderApp
+
+- task: AzureRmWebAppDeployment@4
+  displayName: azure app service deploy
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Pay-As-You-Go(0518cd5b-d389-4983-9496-cdcae31dcc60)'
+    appType: 'webApp'
+    WebAppName: '2011-escalona-order-app'
+    packageForLinux: '3-mvc/SimpleOrderApp/publish'
