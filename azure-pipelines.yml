@@ -34,13 +34,14 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '5.x'
+    version: '3.1.x'
 
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: dotnet build
   workingDirectory: 3-mvc/SimpleOrderApp
 
 - task: DotNetCoreCLI@2
+  displayName: dotnet test
   inputs:
     command: 'test'
     arguments: '--configuration $(buildConfiguration)'
