@@ -32,7 +32,7 @@ namespace SimpleOrderApp.UnitTests
         }
     }
 
-    class FakeLocationRepository : ILocationRepository
+    internal class FakeLocationRepository : ILocationRepository
     {
         public void Create(Location location)
         {

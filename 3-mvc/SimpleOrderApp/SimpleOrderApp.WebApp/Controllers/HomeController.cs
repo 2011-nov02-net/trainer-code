@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using SimpleOrderApp.Domain;
 using SimpleOrderApp.WebApp.ViewModels;
@@ -61,7 +58,7 @@ namespace SimpleOrderApp.WebApp.Controllers
         public IActionResult AddLocation(LocationViewModel viewModel)
         {
             // any time you get data input from the user, you need to validate it.
-            
+
             // if you model bind with a viewmodel with DataAnnotations on it like that,
             // the validations will be automatically checked, and any errors will go into ModelState for you.
             if (!ModelState.IsValid)

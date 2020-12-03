@@ -1,5 +1,3 @@
-using System;
-
 namespace SimpleOrderApp.WebApp.ViewModels
 {
     public class ErrorViewModel

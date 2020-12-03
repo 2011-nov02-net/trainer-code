@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using SimpleOrderApp.Domain;
-using SimpleOrderApp.WebApp.Filters;
-using SimpleOrderApp.WebApp.Services;
 using SimpleOrderApp.WebApp.ViewModels;
 
 namespace SimpleOrderApp.WebApp.Controllers
@@ -61,7 +54,7 @@ namespace SimpleOrderApp.WebApp.Controllers
                 // server-side validation does run automatically, but it doesn't
                 //  throw exceptions or short-circuit the mvc pipeline. it just puts errors it sees
                 //    into the "ModelState" object (property from the Controller base class)
-                
+
                 // you have to check modelstate yourself
                 if (!ModelState.IsValid)
                 {
@@ -77,7 +70,7 @@ namespace SimpleOrderApp.WebApp.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // should log the exception
                 ModelState.AddModelError("", "There was a problem creating the location");

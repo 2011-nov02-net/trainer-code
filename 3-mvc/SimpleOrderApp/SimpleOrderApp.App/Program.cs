@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using SimpleOrderApp.Data;
 using SimpleOrderApp.Domain;
@@ -17,7 +15,7 @@ namespace SimpleOrderApp.App
             ILocationRepository locationRepo = new LocationRepository(context);
             IOrderRepository orderRepo = new OrderRepository(context);
             var orderService = new OrderService(orderRepo, locationRepo);
-            
+
             // manage UI
 
             Console.WriteLine("Welcome to my store");
