@@ -13,6 +13,7 @@ trigger:
     - master
   paths:
     include:
+    - azure-pipelines.yml
     - 3-mvc/SimpleOrderApp
 
 # short for "agent pool" as in "build agent"
@@ -22,12 +23,42 @@ pool:
 
 # variables common to multiple steps
 variables:
+  sdkVersion: 3.1.x
   buildConfiguration: Release
 
 # these steps are run in sequence by the build agent,
 # in a directory that contains the most recent push on that branch of that repo
 # if any step fails, that will halt the build and subsequent steps will not run.
+
+# the two most common types of steps are "script" and "task"
 steps:
+- task: UseDotNet@2
+  displayName: dotnet sdk $(sdkVersion)
+  inputs:
+    packageType: 'sdk'
+    version: '$(sdkVersion)'
+
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: dotnet build
   workingDirectory: 3-mvc/SimpleOrderApp
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet test
+  inputs:
+    command: 'test'
+    arguments: '--configuration $(buildConfiguration)'
+    publishTestResults: true
+    workingDirectory: '3-mvc/SimpleOrderApp'
+
+- script: dotnet publish --configuration $(buildConfiguration) --output publish
+  displayName: dotnet publish
+  workingDirectory: 3-mvc/SimpleOrderApp
+
+- task: AzureRmWebAppDeployment@4
+  displayName: azure app service deploy
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Pay-As-You-Go(0518cd5b-d389-4983-9496-cdcae31dcc60)'
+    appType: 'webApp'
+    WebAppName: '2011-escalona-order-app'
+    packageForLinux: '3-mvc/SimpleOrderApp/publish'
