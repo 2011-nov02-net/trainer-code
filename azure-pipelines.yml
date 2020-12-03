@@ -13,6 +13,7 @@ trigger:
     - master
   paths:
     include:
+    - azure-pipelines.yml
     - 3-mvc/SimpleOrderApp
 
 # short for "agent pool" as in "build agent"
