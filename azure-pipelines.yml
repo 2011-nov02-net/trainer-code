@@ -106,6 +106,7 @@ stages:
     #     packageForLinux: '3-mvc/SimpleOrderApp/publish'
 
 - stage: release
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
   - deployment: app_service
     environment: prod
@@ -119,7 +120,6 @@ stages:
 
           - task: AzureRmWebAppDeployment@4
             displayName: azure app service deploy
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               ConnectionType: 'AzureRM'
               azureSubscription: 'Pay-As-You-Go(0518cd5b-d389-4983-9496-cdcae31dcc60)'
