@@ -18,7 +18,7 @@ RUN dotnet publish -o publish
 
 # configure it with the command it will use to start containers.
 # this runs at the start of "docker run"
-CMD dotnet /app/publish/DockerConsoleApp.dll
+CMD dotnet publish/DockerConsoleAppTwo.dll
 
 
 # CMD dotnet run
