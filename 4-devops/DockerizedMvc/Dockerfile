@@ -5,6 +5,8 @@ WORKDIR /app
 COPY . ./
 RUN dotnet publish -c Release -o out
 
+ENV ASPNETCORE_URLS http://*:80
+
 # ENTRYPOINT is similar to CMD
 # technically... ENTRYPOINT defaults to /bin/sh -c
 #    ("run whatever we type after this as a shell command")
