@@ -14,14 +14,14 @@ COPY . ./
 # a nice short absolute path
 
 # # this runs during "docker build"
-# RUN dotnet publish -o publish
+RUN dotnet publish -o publish
 
 # configure it with the command it will use to start containers.
 # this runs at the start of "docker run"
-# CMD dotnet /app/publish/DockerConsoleApp.dll
+CMD dotnet /app/publish/DockerConsoleApp.dll
 
 
-CMD dotnet run
+# CMD dotnet run
 
 # how do i use this Dockerfile?
 # 1. docker build -t docker-console .
