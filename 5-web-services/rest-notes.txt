@@ -30,7 +30,6 @@ the web follows REST mostly, and some parts follow it much more than others.
 today we usually talk about REST in the context of web services, rather than the context of web pages and browsers.
 REST does not require HTTP, but in practice we are almost always talking about REST over HTTP.
     HTTP's spec fits the requirements of REST very well; REST constraints have influenced the design of HTTP.
-    some things about HTTP do not fit REST: e.g. cookies.
 REST means, any system following its architectural constraints.
     in the industry, though, "REST" is often understood as an HTTP-based web service (that doesn't use hypermedia).
 
