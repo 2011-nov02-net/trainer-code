@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Mime;
+using System.Text;
 using KitchenService.Api.Model;
 using KitchenService.Api.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KitchenService.Api.Controllers
@@ -20,15 +25,24 @@ namespace KitchenService.Api.Controllers
 
         // GET: api/notes
         [HttpGet]
-        public IActionResult Get([FromQuery] DateTime? since = null, [FromQuery] int count = -1)
+        public ActionResult<IEnumerable<Note>> Get([FromQuery] DateTime? since = null, [FromQuery] int count = -1)
         {
+            if (count > 200)
+            {
+                return BadRequest("too many");
+            }
             IEnumerable<Note> notes = _noteRepository.GetAll(since);
             if (count > -1)
             {
                 notes = notes.Take(count);
             }
-            return Ok(notes);
+            return notes.ToList();
         }
+
+        //// GET: api/notes/5.json
+        //// GET: api/notes/5.xml
+        //[HttpGet("{id}.{format}")]
+        //[FormatFilter]
 
         // GET: api/notes/5
         [HttpGet("{id}")]
@@ -39,11 +53,25 @@ namespace KitchenService.Api.Controllers
                 return note;
             }
             return NotFound();
+
+            //var contentResult = new ContentResult
+            //{
+            //    StatusCode = StatusCodes.Status200OK, // or just 200
+            //    ContentType = MediaTypeNames.Application.Json, // "application/json"
+            //    Content = $"{{ \"id\": {id} }}"
+            //};
+            //return contentResult;
+
+            //return StatusCode(200, );
+
+            //return Json(new { id = id });
         }
 
         // TODO: support adding with tags
         // POST: api/notes
         [HttpPost]
+        [Consumes("application/xml")] // we won't even route to this method if the incoming media type doesn't match
+        [Produces("application/xml")] // will override the http Accept header when objectresult decides how to serialize.
         public IActionResult Post([FromBody] Note note)
         {
             _noteRepository.Add(note);

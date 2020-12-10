@@ -1,7 +1,9 @@
+using KitchenService.Api.Formatters;
 using KitchenService.Api.Model;
 using KitchenService.Api.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +25,16 @@ namespace KitchenService.Api
             services.AddSingleton<Fridge>();
             services.AddSingleton<INoteRepository, NoteRepository>();
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                // teach asp.net core to be able to serialize & deserialize XML
+                options.InputFormatters.Add(new XmlSerializerInputFormatter(options));
+                options.OutputFormatters.Add(new XmlSerializerOutputFormatter());
+                options.InputFormatters.Add(new FredInputFormatter());
+                options.OutputFormatters.Add(new FredOutputFormatter());
+
+                options.ReturnHttpNotAcceptable = true;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KitchenService.Api", Version = "v1" });

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace KitchenService.Api.Model
 {
@@ -10,6 +11,7 @@ namespace KitchenService.Api.Model
         public string Name { get; set; }
 
         [JsonIgnore]
+        [XmlIgnore]
         public List<Note> Notes { get; set; }
     }
 }
