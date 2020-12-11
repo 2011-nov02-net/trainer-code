@@ -27,6 +27,8 @@ namespace KitchenService.Api
 
             services.AddControllers(options =>
             {
+                // make asp.net core forget about text/plain so swagger ui uses json as the default
+                options.OutputFormatters.RemoveType<StringOutputFormatter>();
                 // teach asp.net core to be able to serialize & deserialize XML
                 options.InputFormatters.Add(new XmlSerializerInputFormatter(options));
                 options.OutputFormatters.Add(new XmlSerializerOutputFormatter());

@@ -1,5 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using KitchenService.Api.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KitchenService.Api.Controllers
@@ -17,6 +21,7 @@ namespace KitchenService.Api.Controllers
 
         // GET /api/appliances/fridge
         [HttpGet]
+        [ProducesResponseType(typeof(Appliance), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
             var appliance = new Appliance { Id = _fridge.Id, Name = _fridge.Name };
@@ -25,6 +30,7 @@ namespace KitchenService.Api.Controllers
 
         // GET /api/appliances/fridge/contents
         [HttpGet("contents")]
+        [ProducesResponseType(typeof(IEnumerable<FridgeItem>), StatusCodes.Status200OK)]
         public IActionResult GetContents()
         {
             return Ok(_fridge.Contents);
@@ -32,6 +38,8 @@ namespace KitchenService.Api.Controllers
 
         // POST /api/appliances/fridge/contents
         [HttpPost("contents")]
+        [ProducesResponseType(typeof(FridgeItem), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult PostContents(FridgeItem item)
         {
             _fridge.AddItem(item);
@@ -46,6 +54,8 @@ namespace KitchenService.Api.Controllers
 
         // GET /api/appliances/fridge/contents/5
         [HttpGet("contents/{id}")]
+        [ProducesResponseType(typeof(FridgeItem), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetContentsById(int id)
         {
             if (_fridge.Contents.FirstOrDefault(x => x.Id == id) is FridgeItem item)
