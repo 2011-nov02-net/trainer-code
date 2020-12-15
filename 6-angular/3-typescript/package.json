@@ -1,0 +1,14 @@
+{
+  "name": "typescript-demo",
+  "version": "1.0.0",
+  "description": "a typescript demo",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --target ES6 --srcDir src --outDir out"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  }
+}
