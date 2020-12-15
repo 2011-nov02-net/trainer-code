@@ -62,5 +62,4 @@ function printEventDetails(event) {
   // mostRecentEvent = event;
 }
 
-// whenever you click on a list item, insert a new list item
-// just below that one
+// if the user clicks on a list item, it should delete that list item.
