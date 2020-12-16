@@ -1,12 +1,11 @@
-// single-page application
-// it'll still just have one view pretty much, but
+import { platformBrowser } from '@angular/platform-browser';
+import { AppModule } from './app.module';
 
-import Page from "./page";
-import CardService from "./card-service";
+platformBrowser().bootstrapModule(AppModule)
+    .catch(console.error);
 
-const cardService = new CardService();
-
-document.addEventListener('DOMContentLoaded', () => {
-    const page = new Page(cardService);
-    page.run();
-});
+// in angular, you need a root module
+// as an "entry point" for the app,
+// and the root module needs a root component
+//   as its entry point, to contain all the
+//   components nested within it.
