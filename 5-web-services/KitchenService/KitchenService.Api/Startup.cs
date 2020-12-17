@@ -41,6 +41,17 @@ namespace KitchenService.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KitchenService.Api", Version = "v1" });
             });
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200")
+                            .AllowAnyMethod() // allow PUT & DELETE not just GET & POST
+                            .AllowAnyHeader()
+                            .AllowCredentials(); // auth tokens, login/password, etc. coming in headers are treated specially
+                    });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -55,6 +66,8 @@ namespace KitchenService.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

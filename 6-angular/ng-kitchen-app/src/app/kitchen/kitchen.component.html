@@ -1,0 +1,16 @@
+<div *ngIf="fridgeContents; else noData">
+  <div *ngIf="fridgeContents.length === 0">
+    fridge is empty
+  </div>
+  <ul>
+    <!-- ngFor has a special syntax of its own -->
+    <li *ngFor="let item of fridgeContents">
+      {{ item.name }}
+    </li>
+  </ul>
+</div>
+<ng-template #noData>
+  <div>
+  ...
+  </div>
+</ng-template>
