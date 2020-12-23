@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simpleorder-mvc
+  labels:
+    app: simpleorder
+    role: mvc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simpleorder
+      role: mvc
+  # strategy:
+  #   type:
+  template:
+    metadata:
+      labels:
+        app: simpleorder
+        role: mvc
+    spec:
+      containers:
+      - name: mvc
+        image: nicholasescalona/simpleorderapp:1.0
+        env:
+        - name: ConnectionStrings__Sqlite
+          value: 'Data Source=./data.db'
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: '512Mi'
+            cpu: '1'
